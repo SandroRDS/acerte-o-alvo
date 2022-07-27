@@ -28,8 +28,7 @@
 
         var tela = document.querySelector('canvas');
         var pincel = tela.getContext('2d');
-        var xAtual, yAtual;
-        var raio = 20;
+        var xAtual, yAtual, raio;
         var pontuacao = 0;
         var novaDificuldade, intervalo = 1500;
 
@@ -62,6 +61,7 @@
             removerCirculo(xAtual, yAtual);
             xAtual = gerarNovoNumero(10, 1390);
             yAtual = gerarNovoNumero(10, 590);
+            raio = gerarNovoNumero(10, 20);
 
             desenhaCirculo(xAtual, yAtual, raio + 20, 'red'); // maior círculo
             desenhaCirculo(xAtual, yAtual, raio + 10, 'white');
