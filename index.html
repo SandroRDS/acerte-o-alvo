@@ -78,22 +78,21 @@
         }
 
         function dispara(evento) {
-
+            var xAlvo = xAtual;
+            var yAlvo = yAtual;
             var x = evento.pageX - tela.offsetLeft;
             var y = evento.pageY - tela.offsetTop;
 
-            if((x > xAtual - raio) && (x < xAtual + raio))
+            if((x > xAlvo - raio) && (x < xAlvo + raio))
             {
-                if((y > yAtual - raio) && (y < yAtual + raio))
-                { 
-                    var x = xAtual;
-                    var y = yAtual;
+                if((y > yAlvo - raio) && (y < yAlvo + raio))
+                {
                     pontuacao++;
                     document.getElementById("pontuacao").innerHTML = pontuacao;
 
-                    desenhaCirculo(x, y, raio + 20, 'green'); // maior círculo
-                    desenhaCirculo(x, y, raio + 10, 'white');
-                    desenhaCirculo(x, y, raio, 'green'); // menor circulo
+                    desenhaCirculo(xAlvo, yAlvo, raio + 20, 'green'); // maior círculo
+                    desenhaCirculo(xAlvo, yAlvo, raio + 10, 'white');
+                    desenhaCirculo(xAlvo, yAlvo, raio, 'green'); // menor circulo
                     
                     setTimeout(function(){
                         removerCirculo(x, y);
@@ -107,7 +106,7 @@
             desenhaCirculo(xAtual, yAtual, raio + 21, 'lightgray');
         }
 
-        tela.onclick = dispara;
+        tela.onmousedown = dispara;
 
     </script>
 </body>
