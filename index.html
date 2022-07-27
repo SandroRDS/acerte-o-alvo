@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acerte o Alvo</title>
+    <style>
+        body
+        {
+            text-align: center;
+        }
+        canvas
+        {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <canvas width="1400" height="600"></canvas>
+    <h1 id="pontuacao" style="font-family: sans-serif;">0</h1>
+    <button onclick="mudarModo(1500)">Fácil</button>
+    <button onclick="mudarModo(1000)">Médio</button>
+    <button onclick="mudarModo(800)">Difícil</button>
+    <button onclick="mudarModo(600)">Muito Difícil</button>
+    
+    <script>
+
+        var tela = document.querySelector('canvas');
+        var pincel = tela.getContext('2d');
+        var xAtual, yAtual;
+        var raio = 20;
+        var pontuacao = 0;
+        var novaDificuldade, intervalo = 1500;
+
+        function gerarNovoNumero(min, max)
+        {
+            var numeroEncontrado = false;
+            
+            while(numeroEncontrado == false)
+            {
+                var numero = Math.round(Math.random() * 2 * max);
+                
+                //CONTROLAR SE O NÚMERO GERADO ESTÁ ENTRE O NÚMERO MÍNIMO E MÁXIMO PASSADOS
+                if((numero >= min) && (numero <= max))
+                {
+                    numeroEncontrado = true;
+                }
+            }
+
+            return numero;
+        }
+
+        function mudarModo(tempo)
+        {
+            pontuacao = 0;
+            document.getElementById("pontuacao").innerHTML = pontuacao;
+            intervalo = tempo;
+            console.log(intervalo);
+            clearInterval(novaDificuldade);
+            novaDificuldade = setInterval(function(){
+            removerCirculo(xAtual, yAtual);
+            xAtual = gerarNovoNumero(10, 1390);
+            yAtual = gerarNovoNumero(10, 590);
+
+            desenhaCirculo(xAtual, yAtual, raio + 20, 'red'); // maior círculo
+            desenhaCirculo(xAtual, yAtual, raio + 10, 'white');
+            desenhaCirculo(xAtual, yAtual, raio, 'red'); // menor circulo
+            }, intervalo);              
+        }
+
+        function desenhaCirculo(x, y, raio, cor) {
+
+            pincel.fillStyle = cor;
+            pincel.beginPath();
+            pincel.arc(x, y, raio, 0, 2 * Math.PI);
+            pincel.fill();
+        }
+
+        function dispara(evento) {
+
+            var x = evento.pageX - tela.offsetLeft;
+            var y = evento.pageY - tela.offsetTop;
+
+            if((x > xAtual - raio) && (x < xAtual + raio))
+            {
+                if((y > yAtual - raio) && (y < yAtual + raio))
+                { 
+                    var x = xAtual;
+                    var y = yAtual;
+                    pontuacao++;
+                    document.getElementById("pontuacao").innerHTML = pontuacao;
+
+                    desenhaCirculo(x, y, raio + 20, 'green'); // maior círculo
+                    desenhaCirculo(x, y, raio + 10, 'white');
+                    desenhaCirculo(x, y, raio, 'green'); // menor circulo
+                    
+                    setTimeout(function(){
+                        removerCirculo(x, y);
+                    }, 200);
+                }   
+            }
+        }
+
+        function removerCirculo(xAtual, yAtual)
+        {
+            desenhaCirculo(xAtual, yAtual, raio + 21, 'lightgray');
+        }
+
+        tela.onclick = dispara;
+
+    </script>
+</body>
+</html>
