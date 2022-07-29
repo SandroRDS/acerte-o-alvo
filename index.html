@@ -12,7 +12,8 @@
         }
         canvas
         {
-            background-color: lightgray;
+            background-color: rgb(24 13 6);
+            cursor: crosshair;
         }
     </style>
 </head>
@@ -63,9 +64,7 @@
             yAtual = gerarNovoNumero(10, 590);
             raio = gerarNovoNumero(10, 20);
 
-            desenhaCirculo(xAtual, yAtual, raio + 20, 'red'); // maior círculo
-            desenhaCirculo(xAtual, yAtual, raio + 10, 'white');
-            desenhaCirculo(xAtual, yAtual, raio, 'red'); // menor circulo
+            desenhaCirculo(xAtual, yAtual, raio, '#f70505'); // menor circulo
             }, intervalo);              
         }
 
@@ -90,8 +89,6 @@
                     pontuacao++;
                     document.getElementById("pontuacao").innerHTML = pontuacao;
 
-                    desenhaCirculo(xAlvo, yAlvo, raio + 20, 'green'); // maior círculo
-                    desenhaCirculo(xAlvo, yAlvo, raio + 10, 'white');
                     desenhaCirculo(xAlvo, yAlvo, raio, 'green'); // menor circulo
                     
                     setTimeout(function(){
@@ -103,7 +100,7 @@
 
         function removerCirculo(xAtual, yAtual)
         {
-            desenhaCirculo(xAtual, yAtual, raio + 21, 'lightgray');
+            desenhaCirculo(xAtual, yAtual, raio + 21, 'rgb(24 13 6)');
         }
 
         tela.onmousedown = dispara;
