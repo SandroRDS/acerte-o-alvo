@@ -5,17 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acerte o Alvo</title>
-    <style>
-        body
-        {
-            text-align: center;
-        }
-        canvas
-        {
-            background-color: rgb(24 13 6);
-            cursor: crosshair;
-        }
-    </style>
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
     <canvas width="1400" height="600"></canvas>
@@ -25,86 +15,6 @@
     <button onclick="mudarModo(800)">Difícil</button>
     <button onclick="mudarModo(600)">Muito Difícil</button>
     
-    <script>
-
-        var tela = document.querySelector('canvas');
-        var pincel = tela.getContext('2d');
-        var xAtual, yAtual, raio;
-        var pontuacao = 0;
-        var novaDificuldade, intervalo = 1500;
-
-        function gerarNovoNumero(min, max)
-        {
-            var numeroEncontrado = false;
-            
-            while(numeroEncontrado == false)
-            {
-                var numero = Math.round(Math.random() * 2 * max);
-                
-                //CONTROLAR SE O NÚMERO GERADO ESTÁ ENTRE O NÚMERO MÍNIMO E MÁXIMO PASSADOS
-                if((numero >= min) && (numero <= max))
-                {
-                    numeroEncontrado = true;
-                }
-            }
-
-            return numero;
-        }
-
-        function mudarModo(tempo)
-        {
-            pontuacao = 0;
-            document.getElementById("pontuacao").innerHTML = pontuacao;
-            intervalo = tempo;
-            console.log(intervalo);
-            clearInterval(novaDificuldade);
-            novaDificuldade = setInterval(function(){
-            removerCirculo(xAtual, yAtual);
-            xAtual = gerarNovoNumero(10, 1390);
-            yAtual = gerarNovoNumero(10, 590);
-            raio = gerarNovoNumero(10, 20);
-
-            desenhaCirculo(xAtual, yAtual, raio, '#f70505'); // menor circulo
-            }, intervalo);              
-        }
-
-        function desenhaCirculo(x, y, raio, cor) {
-
-            pincel.fillStyle = cor;
-            pincel.beginPath();
-            pincel.arc(x, y, raio, 0, 2 * Math.PI);
-            pincel.fill();
-        }
-
-        function dispara(evento) {
-            var xAlvo = xAtual;
-            var yAlvo = yAtual;
-            var x = evento.pageX - tela.offsetLeft;
-            var y = evento.pageY - tela.offsetTop;
-
-            if((x > xAlvo - raio) && (x < xAlvo + raio))
-            {
-                if((y > yAlvo - raio) && (y < yAlvo + raio))
-                {
-                    pontuacao++;
-                    document.getElementById("pontuacao").innerHTML = pontuacao;
-
-                    desenhaCirculo(xAlvo, yAlvo, raio, 'green'); // menor circulo
-                    
-                    setTimeout(function(){
-                        removerCirculo(xAlvo, yAlvo);
-                    }, 100);
-                }
-            }
-        }
-
-        function removerCirculo(xAtual, yAtual)
-        {
-            desenhaCirculo(xAtual, yAtual, raio + 21, 'rgb(24 13 6)');
-        }
-
-        tela.onmousedown = dispara;
-
-    </script>
+    <script src="js/funcoes.js"></script>
 </body>
 </html>
