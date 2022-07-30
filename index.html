@@ -4,15 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acerte o Alvo</title>
     <link rel="stylesheet" href="styles/styles.css">
+    <title>Acerte o Alvo</title>
 </head>
 <body>
+    <!--Canvas: Tela de Tiro-->
     <canvas width="1400" height="600"></canvas>
+    
+    <!--H1: Contador de Pontuação-->
     <h1 id="pontuacao" style="font-family: sans-serif;">0</h1>
+    
+    <!--Botão: Dificuldade Fácil-->
     <button onclick="mudarModo(1500)">Fácil</button>
+    
+    <!--Botão: Dificuldade Médio-->
     <button onclick="mudarModo(1000)">Médio</button>
+    
+    <!--Botão: Dificuldade Difícil-->
     <button onclick="mudarModo(800)">Difícil</button>
+    
+    <!--Botão: Dificuldade Muito Difícil-->
     <button onclick="mudarModo(600)">Muito Difícil</button>
     
     <script src="js/funcoes.js"></script>

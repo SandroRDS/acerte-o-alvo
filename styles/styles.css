@@ -1,9 +1,9 @@
 body
 {
-    text-align: center;
+    text-align   :  center;
 }
 canvas
 {
-    background-color: rgb(24 13 6);
-    cursor: crosshair;
+    background-color   :  rgb(24 13 6);
+    cursor             :  crosshair;
 }

@@ -1,45 +1,44 @@
 var tela = document.querySelector('canvas');
 var pincel = tela.getContext('2d');
 
-var xAtual, yAtual, raio, acertou;
-var pontuacao = 0;
+var xAtual, yAtual, raio, acertou, pontuacao;
 var novaDificuldade, intervalo = 1500;
 
-function gerarNovoNumero(min, max)
-{
-    var numeroEncontrado = false;
+
+//FUNÇÃO: REALIZAR UM TIRO NA TELA
+function atirar(evento) {
+    var xAlvo = xAtual;
+    var yAlvo = yAtual;
+    var x = evento.pageX - tela.offsetLeft;
+    var y = evento.pageY - tela.offsetTop;
     
-    while(numeroEncontrado == false)
+    //TIRO ALINHADO AO EIXO X DO ALVO
+    if((x > xAlvo - raio) && (x < xAlvo + raio))
     {
-        var numero = Math.round(Math.random() * 2 * max);
-        
-        //CONTROLAR SE O NÚMERO GERADO ESTÁ ENTRE O NÚMERO MÍNIMO E MÁXIMO PASSADOS
-        if((numero >= min) && (numero <= max))
+        //TIRO ALINHADO AO EIXO Y DO ALVO
+        if((y > yAlvo - raio) && (y < yAlvo + raio))
         {
-            numeroEncontrado = true;
+            //DESABILITANDO O ALVO
+            xAtual = "";
+            yAtual = "";
+
+            //AUMENTANDO A PONTUAÇÃO
+            pontuacao++;
+            document.getElementById("pontuacao").innerHTML = pontuacao;
+
+            //DEIXANDO O ALVO VERDE
+            desenhaCirculo(xAlvo, yAlvo, raio, 'green');
+            
+            //REMOVENDO O ALVO APÓS 0.1 SEGUNDOS
+            setTimeout(function(){
+                removerCirculo(xAlvo, yAlvo);
+            }, 10);
         }
     }
-
-    return numero;
 }
 
-function mudarModo(tempo)
-{
-    pontuacao = 0;
-    document.getElementById("pontuacao").innerHTML = pontuacao;
-    intervalo = tempo;
-    console.log(intervalo);
-    clearInterval(novaDificuldade);
-    novaDificuldade = setInterval(function(){
-    removerCirculo(xAtual, yAtual);
-    xAtual = gerarNovoNumero(10, 1390);
-    yAtual = gerarNovoNumero(10, 590);
-    raio = gerarNovoNumero(10, 20);
 
-    desenhaCirculo(xAtual, yAtual, raio, '#f70505'); // menor circulo
-    }, intervalo);              
-}
-
+//FUNÇÃO: DESENHAR UM CÍRCULO NA TELA
 function desenhaCirculo(x, y, raio, cor) {
 
     pincel.fillStyle = cor;
@@ -48,33 +47,58 @@ function desenhaCirculo(x, y, raio, cor) {
     pincel.fill();
 }
 
-function dispara(evento) {
-    var xAlvo = xAtual;
-    var yAlvo = yAtual;
-    var x = evento.pageX - tela.offsetLeft;
-    var y = evento.pageY - tela.offsetTop;
-    
-    if((x > xAlvo - raio) && (x < xAlvo + raio))
-    {
-        if((y > yAlvo - raio) && (y < yAlvo + raio))
-        {
-            xAtual = "";
-            yAtual = "";
-            pontuacao++;
-            document.getElementById("pontuacao").innerHTML = pontuacao;
 
-            desenhaCirculo(xAlvo, yAlvo, raio, 'green');
-            
-            setTimeout(function(){
-                removerCirculo(xAlvo, yAlvo);
-            }, 100);
+//FUNÇÃO: REMOVER UM CÍRCULO DA TELA
+function removerCirculo(x, y)
+{
+    pincel.fillStyle = 'rgb(24 13 6)';
+    pincel.fillRect(0, 0, 1400, 600);
+
+}
+
+
+//FUNÇÃO: SELECIONAR UMA DIFICULDADE
+function mudarModo(tempo)
+{
+    //ZERANDO A PONTUAÇÃO
+    pontuacao = 0;
+    document.getElementById("pontuacao").innerHTML = pontuacao;
+    
+    //DEFININDO O INTERVALO DE TEMPO DE APARIÇÃO DOS ALVOS
+    intervalo = tempo;
+
+    //DEFININDO UM NOVO INTERVALO COM A DIFICULDADE ESCOLHIDA
+    clearInterval(novaDificuldade);
+    novaDificuldade = setInterval(function()
+    {
+        removerCirculo(xAtual, yAtual);
+        xAtual = gerarNovoNumero(10, 1390);
+        yAtual = gerarNovoNumero(10, 590);
+        raio = gerarNovoNumero(10, 20);
+
+        desenhaCirculo(xAtual, yAtual, raio, '#f70505');
+    }, intervalo);              
+}
+
+
+//FUNÇÃO: GERAR UM NÚMERO ALEATÓRIO DENTRO DE UM INTERVALO
+function gerarNovoNumero(min, max)
+{
+    var numeroEncontrado = false;
+    
+    while(numeroEncontrado == false)
+    {
+        var numero = Math.round(Math.random() * max);
+        
+        //CONTROLAR SE O NÚMERO GERADO ESTÁ ENTRE O NÚMERO MÍNIMO E MÁXIMO PASSADOS
+        if((numero >= min) && (numero <= max))
+        {
+            numeroEncontrado = true;
         }
     }
+    
+    return numero;
 }
 
-function removerCirculo(xAtual, yAtual)
-{
-    desenhaCirculo(xAtual, yAtual, raio + 21, 'rgb(24 13 6)');
-}
 
-tela.onmousedown = dispara;
+tela.onmousedown = atirar;
